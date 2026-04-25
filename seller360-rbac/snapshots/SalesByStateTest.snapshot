@@ -1,0 +1,125 @@
+{
+  "data" : {
+    "SalesByStateTest" : [ {
+      "seller_id" : "03bd479e1d9484cdb14104d3023f7321",
+      "customer_state" : "MS",
+      "num_orders" : 1,
+      "total_price" : 119.9,
+      "total_freight_value" : 20.99
+    }, {
+      "seller_id" : "05a48cc8859962767935ab9087417fbb",
+      "customer_state" : "RJ",
+      "num_orders" : 1,
+      "total_price" : 42.9,
+      "total_freight_value" : 16.49
+    }, {
+      "seller_id" : "1444c08e64d55fb3c25f0f09c07ffcf2",
+      "customer_state" : "SP",
+      "num_orders" : 1,
+      "total_price" : 2749,
+      "total_freight_value" : 69.74
+    }, {
+      "seller_id" : "166e8f1381e09651983c38b1f6f91c11",
+      "customer_state" : "RS",
+      "num_orders" : 1,
+      "total_price" : 39.9,
+      "total_freight_value" : 15.1
+    }, {
+      "seller_id" : "166e8f1381e09651983c38b1f6f91c11",
+      "customer_state" : "SP",
+      "num_orders" : 1,
+      "total_price" : 38.9,
+      "total_freight_value" : 15.1
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "BA",
+      "num_orders" : 1,
+      "total_price" : 43.9,
+      "total_freight_value" : 27.73
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "GO",
+      "num_orders" : 2,
+      "total_price" : 129.8,
+      "total_freight_value" : 50.58
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "MG",
+      "num_orders" : 1,
+      "total_price" : 74.9,
+      "total_freight_value" : 81.61
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "MS",
+      "num_orders" : 1,
+      "total_price" : 649.9,
+      "total_freight_value" : 23.52
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "RJ",
+      "num_orders" : 8,
+      "total_price" : 1164.2,
+      "total_freight_value" : 230.85
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "RS",
+      "num_orders" : 3,
+      "total_price" : 167.7,
+      "total_freight_value" : 75.73
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "SC",
+      "num_orders" : 2,
+      "total_price" : 117.8,
+      "total_freight_value" : 43.25
+    }, {
+      "seller_id" : "1b938a7ec6ac5061a66a3766e0e75f90",
+      "customer_state" : "SP",
+      "num_orders" : 15,
+      "total_price" : 1639.4,
+      "total_freight_value" : 376.96
+    }, {
+      "seller_id" : "2e13c71026e1a39ba5cc1b86dcb679aa",
+      "customer_state" : "RJ",
+      "num_orders" : 1,
+      "total_price" : 76,
+      "total_freight_value" : 22.41
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "customer_state" : "MG",
+      "num_orders" : 1,
+      "total_price" : 101.7,
+      "total_freight_value" : 15.92
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "customer_state" : "SP",
+      "num_orders" : 2,
+      "total_price" : 117,
+      "total_freight_value" : 11.98
+    }, {
+      "seller_id" : "37515688008a7a40ac93e3b2e4ab203f",
+      "customer_state" : "BA",
+      "num_orders" : 1,
+      "total_price" : 19.9,
+      "total_freight_value" : 20.14
+    }, {
+      "seller_id" : "51a04a8a6bdcb23deccc82b0b80742cf",
+      "customer_state" : "MG",
+      "num_orders" : 1,
+      "total_price" : 167.99,
+      "total_freight_value" : 31.93
+    }, {
+      "seller_id" : "6560211a19b47992c3666cc44a7e94c0",
+      "customer_state" : "RN",
+      "num_orders" : 1,
+      "total_price" : 19,
+      "total_freight_value" : 56.35
+    }, {
+      "seller_id" : "768a86e36ad6aae3d03ee3c6433d61df",
+      "customer_state" : "ES",
+      "num_orders" : 1,
+      "total_price" : 24,
+      "total_freight_value" : 15.27
+    } ]
+  }
+}

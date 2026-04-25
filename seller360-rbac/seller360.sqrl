@@ -1,0 +1,100 @@
+-- Seller 360: Analytics data pipeline for sellers on the ecommerce platform.
+-- Ingests order events from the ecommerce catalog, flattens nested item arrays,
+-- and aggregates sales metrics per seller per product per day.
+
+IMPORT catalog.ecommerce-sources.orders-{{environment}} AS orders;
+IMPORT catalog.ecommerce-sources.masterdata-{{environment}} AS masterdata;
+
+/* ========================================
+   PART 1: Flatten Order Items
+   ======================================== */
+
+-- Unnest nested items array from order events to produce a flat stream of order line items.
+-- Private table (underscore prefix) used as basis for both OrderItems and ProductsSoldByDay.
+_FlatOrderItems := SELECT
+    o.order_id,
+    o.customer_id,
+    o.order_purchase_timestamp,
+    i.order_item_id,
+    i.product_id,
+    i.seller_id,
+    i.shipping_limit_date,
+    i.price,
+    i.freight_value
+FROM orders.OrderEvents o
+CROSS JOIN UNNEST(o.items) AS i(order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value);
+
+/** Flattened order items for a seller, ordered by most recent purchase first.
+    Enables seller dashboards to display individual order line items and drill into product-level detail. */
+/*+query_by_all(seller_id) */
+OrderItems := SELECT * FROM _FlatOrderItems ORDER BY order_purchase_timestamp DESC;
+
+/* ========================================
+   PART 2: Daily Product Aggregations
+   ======================================== */
+
+/** Daily tumble-window aggregation of order items per seller per product.
+    Enables sellers to track sales volume, revenue, and shipping costs for each product by day.
+    Results ordered by most recent window first, then by product for consistent display. */
+/*+query_by_all(seller_id) */
+ProductsSoldByDay := SELECT
+    seller_id,
+    product_id,
+    window_start,
+    window_end,
+    window_time,
+    COUNT(*) AS num_orders,
+    SUM(price) AS total_price,
+    SUM(freight_value) AS total_freight_value
+FROM TABLE(TUMBLE(TABLE _FlatOrderItems, DESCRIPTOR(order_purchase_timestamp), INTERVAL '1' DAY))
+GROUP BY seller_id, product_id, window_start, window_end, window_time
+ORDER BY window_start DESC, product_id ASC;
+
+/* ========================================
+   PART 3: Sales By State
+   ======================================== */
+
+-- Enrich flat order items with customer state via temporal join on Customers versioned state.
+-- Temporal join ensures we use the customer record that was current at purchase time.
+_OrderItemsWithState := SELECT
+    f.seller_id,
+    f.order_id,
+    f.order_item_id,
+    f.price,
+    f.freight_value,
+    f.order_purchase_timestamp,
+    c.customer_state
+FROM _FlatOrderItems f
+JOIN masterdata.Customers FOR SYSTEM_TIME AS OF f.order_purchase_timestamp AS c
+    ON f.customer_id = c.customer_id;
+
+/** Total sales revenue and freight by customer state and seller.
+    Enables sellers to understand which geographic markets generate the most revenue. */
+/*+query_by_all(seller_id) */
+SalesByState := SELECT
+    seller_id,
+    customer_state,
+    COUNT(*) AS num_orders,
+    SUM(price) AS total_price,
+    SUM(freight_value) AS total_freight_value
+FROM _OrderItemsWithState
+GROUP BY seller_id, customer_state;
+
+/* ========================================
+   TEST CASES
+   ======================================== */
+
+/*+test */
+OrderItemsTest := SELECT seller_id, product_id, order_id, order_item_id, price, freight_value, order_purchase_timestamp
+                  FROM OrderItems
+                  ORDER BY order_purchase_timestamp DESC, order_id ASC, order_item_id ASC;
+
+/*+test */
+ProductsSoldByDayTest := SELECT seller_id, product_id, num_orders, total_price, total_freight_value, window_start
+                         FROM ProductsSoldByDay
+                         ORDER BY window_start DESC, seller_id ASC, product_id ASC;
+
+/*+test */
+SalesByStateTest := SELECT seller_id, customer_state, num_orders, total_price, total_freight_value
+                    FROM SalesByState
+                    ORDER BY seller_id ASC, customer_state ASC;
