@@ -1,0 +1,29 @@
+{
+  "data" : {
+    "OrderItems" : [ {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "325a06bcce0da45b7f4ecf2797dd40e4",
+      "order_id" : "bc8a5de6abf5b14f98a6135a7fb46731",
+      "order_item_id" : 2,
+      "price" : 10.8,
+      "freight_value" : 2.42,
+      "order_purchase_timestamp" : "2017-08-30T11:47:52.000Z"
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "ffb64e34a37740dafb6c88f1abd1fa61",
+      "order_id" : "4a90af3e85dd563884e2afeab1091394",
+      "order_item_id" : 1,
+      "price" : 106.2,
+      "freight_value" : 9.56,
+      "order_purchase_timestamp" : "2017-08-21T20:35:44.000Z"
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "f4621f8ad6f54a2e3c408884068be46d",
+      "order_id" : "6d953888a914b67350d5bc4d48f2acab",
+      "order_item_id" : 1,
+      "price" : 101.7,
+      "freight_value" : 15.92,
+      "order_purchase_timestamp" : "2017-05-05T16:12:29.000Z"
+    } ]
+  }
+}

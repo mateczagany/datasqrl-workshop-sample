@@ -1,0 +1,10 @@
+query {
+  ProductsSoldByDay {
+    seller_id
+    product_id
+    num_orders
+    total_price
+    total_freight_value
+    window_start
+  }
+}

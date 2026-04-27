@@ -25,9 +25,14 @@ FROM orders.OrderEvents o
 CROSS JOIN UNNEST(o.items) AS i(order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value);
 
 /** Flattened order items for a seller, ordered by most recent purchase first.
-    Enables seller dashboards to display individual order line items and drill into product-level detail. */
-/*+query_by_all(seller_id) */
-OrderItems := SELECT * FROM _FlatOrderItems ORDER BY order_purchase_timestamp DESC;
+    Enables seller dashboards to display individual order line items and drill into product-level detail.
+    seller_id is read from the JWT claim auth.seller_id. */
+_OrderItemsAll := SELECT * FROM _FlatOrderItems ORDER BY order_purchase_timestamp DESC;
+
+OrderItems(seller_id STRING NOT NULL METADATA FROM 'auth.seller_id') := SELECT *
+FROM _OrderItemsAll
+WHERE seller_id = :seller_id
+ORDER BY order_purchase_timestamp DESC;
 
 /* ========================================
    PART 2: Daily Product Aggregations
@@ -35,9 +40,9 @@ OrderItems := SELECT * FROM _FlatOrderItems ORDER BY order_purchase_timestamp DE
 
 /** Daily tumble-window aggregation of order items per seller per product.
     Enables sellers to track sales volume, revenue, and shipping costs for each product by day.
-    Results ordered by most recent window first, then by product for consistent display. */
-/*+query_by_all(seller_id) */
-ProductsSoldByDay := SELECT
+    Results ordered by most recent window first, then by product for consistent display.
+    seller_id is read from the JWT claim auth.seller_id. */
+_ProductsSoldByDayAll := SELECT
     seller_id,
     product_id,
     window_start,
@@ -48,6 +53,11 @@ ProductsSoldByDay := SELECT
     SUM(freight_value) AS total_freight_value
 FROM TABLE(TUMBLE(TABLE _FlatOrderItems, DESCRIPTOR(order_purchase_timestamp), INTERVAL '1' DAY))
 GROUP BY seller_id, product_id, window_start, window_end, window_time
+ORDER BY window_start DESC, product_id ASC;
+
+ProductsSoldByDay(seller_id STRING NOT NULL METADATA FROM 'auth.seller_id') := SELECT *
+FROM _ProductsSoldByDayAll
+WHERE seller_id = :seller_id
 ORDER BY window_start DESC, product_id ASC;
 
 /* ========================================
@@ -69,16 +79,20 @@ JOIN masterdata.Customers FOR SYSTEM_TIME AS OF f.order_purchase_timestamp AS c
     ON f.customer_id = c.customer_id;
 
 /** Total sales revenue and freight by customer state and seller.
-    Enables sellers to understand which geographic markets generate the most revenue. */
-/*+query_by_all(seller_id) */
-SalesByState := SELECT
-    seller_id,
-    customer_state,
+    Enables sellers to understand which geographic markets generate the most revenue.
+    seller_id is read from the JWT claim auth.seller_id. */
+_SalesByStateAll := SELECT
+    o.seller_id,
+    o.customer_state,
     COUNT(*) AS num_orders,
-    SUM(price) AS total_price,
-    SUM(freight_value) AS total_freight_value
-FROM _OrderItemsWithState
-GROUP BY seller_id, customer_state;
+    SUM(o.price) AS total_price,
+    SUM(o.freight_value) AS total_freight_value
+FROM _OrderItemsWithState o
+GROUP BY o.seller_id, o.customer_state;
+
+SalesByState(seller_id STRING NOT NULL METADATA FROM 'auth.seller_id') := SELECT *
+FROM _SalesByStateAll
+WHERE seller_id = :seller_id;
 
 /* ========================================
    TEST CASES
@@ -86,15 +100,15 @@ GROUP BY seller_id, customer_state;
 
 /*+test */
 OrderItemsTest := SELECT seller_id, product_id, order_id, order_item_id, price, freight_value, order_purchase_timestamp
-                  FROM OrderItems
+                  FROM _OrderItemsAll
                   ORDER BY order_purchase_timestamp DESC, order_id ASC, order_item_id ASC;
 
 /*+test */
 ProductsSoldByDayTest := SELECT seller_id, product_id, num_orders, total_price, total_freight_value, window_start
-                         FROM ProductsSoldByDay
+                         FROM _ProductsSoldByDayAll
                          ORDER BY window_start DESC, seller_id ASC, product_id ASC;
 
 /*+test */
 SalesByStateTest := SELECT seller_id, customer_state, num_orders, total_price, total_freight_value
-                    FROM SalesByState
+                    FROM _SalesByStateAll
                     ORDER BY seller_id ASC, customer_state ASC;

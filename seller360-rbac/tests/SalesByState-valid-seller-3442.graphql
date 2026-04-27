@@ -1,0 +1,9 @@
+query {
+  SalesByState {
+    seller_id
+    customer_state
+    num_orders
+    total_price
+    total_freight_value
+  }
+}

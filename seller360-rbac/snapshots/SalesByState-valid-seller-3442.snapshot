@@ -1,0 +1,17 @@
+{
+  "data" : {
+    "SalesByState" : [ {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "customer_state" : "MG",
+      "num_orders" : 1,
+      "total_price" : 101.7,
+      "total_freight_value" : 15.92
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "customer_state" : "SP",
+      "num_orders" : 2,
+      "total_price" : 117,
+      "total_freight_value" : 11.98
+    } ]
+  }
+}

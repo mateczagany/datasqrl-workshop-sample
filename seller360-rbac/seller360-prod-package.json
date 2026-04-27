@@ -13,6 +13,25 @@
         "execution.runtime-mode": "STREAMING",
         "table.exec.source.idle-timeout": "1 s"
       }
+    },
+    "vertx": {
+      "authKind": ["JWT"],
+      "config": {
+        "jwtAuth": {
+          "pubSecKeys": [
+            {
+              "algorithm": "HS256",
+              "buffer": "${SELLER360_RBAC_JWT_SECRET_BASE64}"
+            }
+          ],
+          "jwtOptions": {
+            "issuer": "seller360-rbac",
+            "audience": ["seller360-api"],
+            "expiresInSeconds": "3600",
+            "leeway": "60"
+          }
+        }
+      }
     }
   },
   "compiler": {

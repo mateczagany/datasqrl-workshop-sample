@@ -1,0 +1,26 @@
+{
+  "data" : {
+    "ProductsSoldByDay" : [ {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "325a06bcce0da45b7f4ecf2797dd40e4",
+      "num_orders" : 1,
+      "total_price" : 10.8,
+      "total_freight_value" : 2.42,
+      "window_start" : "2017-08-30T00:00:00.000Z"
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "ffb64e34a37740dafb6c88f1abd1fa61",
+      "num_orders" : 1,
+      "total_price" : 106.2,
+      "total_freight_value" : 9.56,
+      "window_start" : "2017-08-21T00:00:00.000Z"
+    }, {
+      "seller_id" : "3442f8959a84dea7ee197c632cb2df15",
+      "product_id" : "f4621f8ad6f54a2e3c408884068be46d",
+      "num_orders" : 1,
+      "total_price" : 101.7,
+      "total_freight_value" : 15.92,
+      "window_start" : "2017-05-05T00:00:00.000Z"
+    } ]
+  }
+}

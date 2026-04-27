@@ -14,6 +14,25 @@
         "execution.runtime-mode": "STREAMING",
         "table.exec.source.idle-timeout": "1 s"
       }
+    },
+    "vertx": {
+      "authKind": ["JWT"],
+      "config": {
+        "jwtAuth": {
+          "pubSecKeys": [
+            {
+              "algorithm": "HS256",
+              "buffer": "c2VsbGVyMzYwLXJiYWMtand0LXNlY3JldC1jaGFuZ2UtbWUtYmVmb3JlLXByb2R1Y3Rpb24="
+            }
+          ],
+          "jwtOptions": {
+            "issuer": "seller360-rbac",
+            "audience": ["seller360-api"],
+            "expiresInSeconds": "3600",
+            "leeway": "60"
+          }
+        }
+      }
     }
   },
   "compiler": {
@@ -27,6 +46,9 @@
   },
   "test-runner": {
     "delay-sec": -1,
-    "required-checkpoints": 1
+    "required-checkpoints": 1,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZWxsZXIzNjAtcmJhYyIsImF1ZCI6WyJzZWxsZXIzNjAtYXBpIl0sInNlbGxlcl9pZCI6IjM0NDJmODk1OWE4NGRlYTdlZTE5N2M2MzJjYjJkZjE1IiwiZXhwIjo5OTk5OTk5OTk5fQ.mQkEDg4mdyXbv4W6MtHLxmFMECPS7Y3Q0p0xBGkqi2g"
+    }
   }
 }
