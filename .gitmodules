@@ -1,3 +1,0 @@
-[submodule "seller360/catalog"]
-	path = seller360/catalog
-	url = git@github.com:datasqrl-colab/datasqrl-workshop-catalog.git
